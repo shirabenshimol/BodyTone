@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.Data;
 
 
@@ -30,6 +33,7 @@ public class Lesson {
 
     @OneToMany(mappedBy = "lesson")  
     // קשר אחד-לרבים: שיעור אחד מחזיק רשימת הרשמות
+     @JsonManagedReference
     private List<LessonRegistration> registrations;
 
     // Getters & Setters

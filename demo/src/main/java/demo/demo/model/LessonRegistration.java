@@ -2,6 +2,9 @@ package demo.demo.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.Data;
 
 
@@ -23,6 +26,7 @@ public class LessonRegistration {
     @ManyToOne  // קשר רבים-לאחד ל-Lesson
     @MapsId("lessonId")  // id משותף בקומפוזיציה הוא lessonId
     @JoinColumn(name = "lesson_id")
+    @JsonBackReference
     private Lesson lesson;
 
     @Column(name = "joined_at")
