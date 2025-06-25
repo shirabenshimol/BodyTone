@@ -3,7 +3,7 @@ import java.util.List;
 import demo.demo.model.LessonRegistration;
 import demo.demo.model.LessonRegistrationId;
 
-public interface LessonRegistrationSevrice {
+public interface LessonRegistrationService {
     void addLessonRegistration(LessonRegistration l);
     void updateLessonRegistration(LessonRegistration l);
     void deleteLessonRegistration(LessonRegistrationId idLessonRegistration);

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import demo.demo.dto.LessonRegistrationDTO;
 import demo.demo.model.LessonRegistration;
 import demo.demo.model.LessonRegistrationId;
-import demo.demo.service.LessonRegistrationSevrice;
+import demo.demo.service.LessonRegistrationService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ import org.springframework.http.ResponseEntity;
 public class LessonRegistrationController {
 
     @Autowired
-    private LessonRegistrationSevrice aService;
+    private LessonRegistrationService aService;
 
     @Autowired
     private ModelMapper mapper;
@@ -46,21 +46,44 @@ public class LessonRegistrationController {
     }
 
     @PutMapping("/update")
-    public void update(@RequestBody LessonRegistrationDTO dto) {
-        aService.updateLessonRegistration(mapper.map(dto, LessonRegistration.class));
+    public ResponseEntity<?> update(@RequestBody LessonRegistrationDTO dto) {
+        try {
+            aService.updateLessonRegistration(mapper.map(dto, LessonRegistration.class));
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("שגיאה בעדכון הרשמה: " + e.getMessage());
+        }
     }
 
-  @DeleteMapping("/delete/{lessonId}/{studentId}")
-public void delete(@PathVariable long lessonId, @PathVariable long studentId) {
-    LessonRegistrationId id = new LessonRegistrationId(lessonId, studentId);
-    aService.deleteLessonRegistration(id);
-}
+    @DeleteMapping("/delete/{lessonId}/{studentId}")
+    public ResponseEntity<?> delete(@PathVariable long lessonId, @PathVariable long studentId) {
+        try {
+            LessonRegistrationId id = new LessonRegistrationId(lessonId, studentId);
+            aService.deleteLessonRegistration(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("שגיאה במחיקת הרשמה: " + e.getMessage());
+        }
+    }
 
-
-   @GetMapping("/getById/{lessonId}/{studentId}")
-public LessonRegistration getById(@PathVariable long lessonId, @PathVariable long studentId) {
-    LessonRegistrationId id = new LessonRegistrationId(lessonId, studentId);
-    return aService.getByIdLessonRegistration(id);
-}
-
+    @GetMapping("/getById/{lessonId}/{studentId}")
+    public ResponseEntity<?> getById(@PathVariable long lessonId, @PathVariable long studentId) {
+        try {
+            LessonRegistrationId id = new LessonRegistrationId(lessonId, studentId);
+            LessonRegistration entity = aService.getByIdLessonRegistration(id);
+            if (entity == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("הרשמה לא נמצאה");
+            }
+            LessonRegistrationDTO dto = mapper.map(entity, LessonRegistrationDTO.class);
+            return ResponseEntity.ok(dto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("שגיאה בקבלת הרשמה: " + e.getMessage());
+        }
+    }
 }

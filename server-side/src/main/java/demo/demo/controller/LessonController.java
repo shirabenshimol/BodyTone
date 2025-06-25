@@ -45,19 +45,41 @@ public class LessonController {
     }
 
     @PutMapping("/update")
-    public void updateLesson(@RequestBody LessonDTO p) {
-        aService.updateLesson(mapper.map(p, Lesson.class));
+    public ResponseEntity<?> updateLesson(@RequestBody LessonDTO p) {
+        try {
+            aService.updateLesson(mapper.map(p, Lesson.class));
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("שגיאה בעדכון שיעור: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/delete/{idLesson}") // תיאום בין שם בפרמטר לשם ב-URL
-    public void deleteLesson(@PathVariable int idLesson) {
-        aService.deleteLesson(idLesson);
+    public ResponseEntity<?> deleteLesson(@PathVariable long idLesson) {
+        try {
+            aService.deleteLesson(idLesson);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("שגיאה במחיקת שיעור: " + e.getMessage());
+        }
     }
 
-   @GetMapping("/getByCode/{idLesson}")
-    public Lesson getLesson(@PathVariable long idLesson) {
-    return aService.getByIdLesson(idLesson);
+    @GetMapping("/getByCode/{idLesson}")
+    public ResponseEntity<?> getLesson(@PathVariable long idLesson) {
+        try {
+            Lesson lesson = aService.getByIdLesson(idLesson);
+            if (lesson == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("שיעור לא נמצא");
+            }
+            return ResponseEntity.ok(mapper.map(lesson, LessonDTO.class));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("שגיאה בקבלת השיעור: " + e.getMessage());
+        }
+    }
 }
-
-}
-

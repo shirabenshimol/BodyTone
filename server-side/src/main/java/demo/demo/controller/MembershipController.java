@@ -32,32 +32,54 @@ public class MembershipController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addLesson(@RequestBody MembershipDTO p) {
+    public ResponseEntity<?> addMembership(@RequestBody MembershipDTO p) {
         try {
             aService.addMembership(mapper.map(p, Membership.class));
             return ResponseEntity.ok().build(); // הצלחה ללא גוף
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("שגיאה בעת הוספת שיעור: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("שגיאה בעת הוספת חבר: " + e.getMessage());
         }
     }
 
     @PutMapping("/update")
-    public void updateMembership(@RequestBody MembershipDTO p) {
-        aService.updateMembership(mapper.map(p, Membership.class));
+    public ResponseEntity<?> updateMembership(@RequestBody MembershipDTO p) {
+        try {
+            aService.updateMembership(mapper.map(p, Membership.class));
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("שגיאה בעדכון חבר: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/delete/{idMembership}") // תיאום בין שם בפרמטר לשם ב-URL
-    public void deleteMembership(@PathVariable int idMembership) {
-        aService.deleteMembership(idMembership);
+    public ResponseEntity<?> deleteMembership(@PathVariable long idMembership) {
+        try {
+            aService.deleteMembership(idMembership);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("שגיאה במחיקת חבר: " + e.getMessage());
+        }
     }
 
-   @GetMapping("/getByCode/{idMembership}")
-    public Membership getMembershipn(@PathVariable long idMembership) {
-    return aService.getByIdMembership(idMembership);
+    @GetMapping("/getByCode/{idMembership}")
+    public ResponseEntity<?> getMembership(@PathVariable long idMembership) {
+        try {
+            Membership membership = aService.getByIdMembership(idMembership);
+            if (membership == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("חבר לא נמצא");
+            }
+            MembershipDTO dto = mapper.map(membership, MembershipDTO.class);
+            return ResponseEntity.ok(dto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("שגיאה בקבלת חבר: " + e.getMessage());
+        }
+    }
 }
-
-}
-

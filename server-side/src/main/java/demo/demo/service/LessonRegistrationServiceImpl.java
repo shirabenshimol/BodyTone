@@ -10,7 +10,7 @@ import demo.demo.model.LessonRegistration;
 import demo.demo.model.LessonRegistrationId;
 
 @Service
-public class LessonRegistrationServiceImpl implements LessonRegistrationSevrice {
+public class LessonRegistrationServiceImpl implements LessonRegistrationService {
 
     @Autowired
     private LessonRegistrationRepository rep;
