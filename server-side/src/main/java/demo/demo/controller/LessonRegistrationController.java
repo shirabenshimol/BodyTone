@@ -8,6 +8,7 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import demo.demo.dto.LessonHistoryDTO;
 import demo.demo.dto.LessonRegistrationDTO;
 import demo.demo.model.LessonRegistration;
 import demo.demo.model.LessonRegistrationId;
@@ -60,7 +61,7 @@ public class LessonRegistrationController {
     @DeleteMapping("/delete/{lessonId}/{studentId}")
     public ResponseEntity<?> delete(@PathVariable long lessonId, @PathVariable long studentId) {
         try {
-            LessonRegistrationId id = new LessonRegistrationId(lessonId, studentId);
+            LessonRegistrationId id = new LessonRegistrationId(studentId,lessonId);
             aService.deleteLessonRegistration(id);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
@@ -86,4 +87,17 @@ public class LessonRegistrationController {
                     .body("שגיאה בקבלת הרשמה: " + e.getMessage());
         }
     }
+
+    @GetMapping("/getByUser/{userId}")
+public ResponseEntity<?> getLessonsByUser(@PathVariable Long userId) {
+    try {
+        List<LessonHistoryDTO> list = aService.getLessonsByUserId(userId);
+        return ResponseEntity.ok(list);
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("שגיאה בשליפת שיעורים למשתמש");
+    }
+}
+
 }
