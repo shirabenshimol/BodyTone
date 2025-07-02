@@ -4,18 +4,36 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import '@fontsource/inter'; // default weight
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { Provider } from 'react-redux';
+import enrollmentsSlice from './redux/reducers/enrollmentsSlice';
+import { BrowserRouter } from 'react-router-dom';
 
-
+// יצירת השורש של הריאקט
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+
+const rootReducer = combineReducers({
+  enrollments: enrollmentsSlice,  // חייב להיות "enrollments" כדי להתאים ל-useSelector
+});
+
+
+// יצירת החנות (store)
+const myStore = configureStore({
+  reducer: rootReducer,
+});
+
+// רינדור האפליקציה
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={myStore}>
+     
+        <App />
+    
+    </Provider>
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

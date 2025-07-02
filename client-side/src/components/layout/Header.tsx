@@ -64,6 +64,8 @@ const Header: React.FC = () => {
           <Button color="inherit" onClick={() => navigate('/classes')}>Classes</Button>
           <Button color="inherit">Membership</Button>
           <Button color="inherit">Contact</Button>
+          <Button color="inherit" onClick={() => navigate('/enrollments')}>My Enrollments</Button>
+
         </Box>
 
         {token ? (

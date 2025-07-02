@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Paper, Container } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { setEnrollments, addEnrollment } from '../../redux/reducers/enrollmentsSlice';
 
 interface Lesson {
   id: number;
@@ -26,6 +28,9 @@ const getColorByType = (name: string) => {
 };
 
 const LessonsPage: React.FC = () => {
+  const dispatch = useDispatch();
+  const enrollments = useSelector((state: any) => state.enrollments.enrollments);
+
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [hoveredLessonId, setHoveredLessonId] = useState<number | null>(null);
   const [myRegistrations, setMyRegistrations] = useState<number[]>([]);
@@ -36,7 +41,7 @@ const LessonsPage: React.FC = () => {
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
 
-    // Load lessons
+    // טען את כל השיעורים
     fetch('http://localhost:8080/Lessons/getAll')
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch lessons');
@@ -45,7 +50,7 @@ const LessonsPage: React.FC = () => {
       .then((data) => setLessons(data))
       .catch((err) => console.error('Failed to load lessons:', err));
 
-    // Load user's registrations
+    // טען את ההרשמות של המשתמש
     if (userId && token) {
       fetch(`http://localhost:8080/LessonRegistration/byUser/${userId}`, {
         headers: { Authorization: "Bearer " + token }
@@ -54,10 +59,20 @@ const LessonsPage: React.FC = () => {
         .then(data => {
           const ids = data.map((r: any) => r.lesson.id);
           setMyRegistrations(ids);
+
+          // עדכן את ה־Redux עם ההרשמות
+          const enrollmentsFromApi = data.map((r: any) => ({
+            id: r.lesson.id,
+            name: r.lesson.name,
+            date: r.lesson.date,
+            time: r.lesson.time,
+            status: r.status,
+          }));
+          dispatch(setEnrollments(enrollmentsFromApi));
         })
         .catch(err => console.error("Failed to load registrations", err));
     }
-  }, []);
+  }, [dispatch]);
 
   const getLesson = (dayIndex: number, time: string) => {
     return lessons.find((lesson) => {
@@ -76,6 +91,9 @@ const LessonsPage: React.FC = () => {
     if (isRegistered(lessonId)) return alert("כבר נרשמת לשיעור הזה");
 
     try {
+      const lesson = lessons.find(l => l.id === lessonId);
+      if (!lesson) return alert("השיעור לא נמצא");
+
       const response = await fetch("http://localhost:8080/LessonRegistration/add", {
         method: "POST",
         headers: {
@@ -92,7 +110,17 @@ const LessonsPage: React.FC = () => {
 
       if (!response.ok) throw new Error("Registration failed");
 
-      setMyRegistrations(prev => [...prev, lessonId]); // עדכון סטייט
+      setMyRegistrations(prev => [...prev, lessonId]);
+
+      // עדכון Redux עם ההרשמה החדשה
+      dispatch(addEnrollment({
+        id: lesson.id,
+        name: lesson.name,
+        date: lesson.date,
+        time: lesson.time,
+        status: "REGISTERED",
+      }));
+
       alert("נרשמת בהצלחה 🎉");
 
     } catch (err) {

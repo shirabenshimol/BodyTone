@@ -6,6 +6,7 @@ import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import LessonsPage from './components/LessonsPage/LessonsPage';
 import Profile from './components/Profile/profile';
+import UserLesson from './components/UserLesson/UserLesson';
 
 const App = () => (
   <BrowserRouter>
@@ -17,7 +18,7 @@ const App = () => (
       <Route path="/register" element={<Register />} />
       <Route path="/classes" element={<LessonsPage />} />
       <Route path="/profile" element={<Profile />} />
-
+      <Route path="/enrollments" element={<UserLesson />} />
     </Routes>
   </BrowserRouter>
 );
