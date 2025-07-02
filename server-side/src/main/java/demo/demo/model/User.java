@@ -24,6 +24,12 @@ public class User {
   @Column
   private String email;
 
+  @Column
+  private LocalDate birthDate;
+
+  @Column
+  private String address;
+
   @Column(name = "membership_start")
   private LocalDate membershipStart;
 
