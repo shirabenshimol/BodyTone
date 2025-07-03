@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { AppBar, Toolbar, Typography, Button, Box, Avatar, Menu, MenuItem, ListItemIcon } from '@mui/material';
+import {
+  AppBar,
+  Toolbar,
+  Button,
+  Box,
+  Avatar,
+  Menu,
+  MenuItem,
+  ListItemIcon
+} from '@mui/material';
 import { Logout as LogoutIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
@@ -47,7 +56,6 @@ const Header: React.FC = () => {
   };
 
   const handleProfile = () => {
-  
     navigate("/profile");
   };
 
@@ -56,13 +64,26 @@ const Header: React.FC = () => {
   return (
     <AppBar position="static" sx={{ backgroundColor: '#1c2431', boxShadow: 'none' }}>
       <Toolbar sx={{ justifyContent: 'space-between' }}>
-        <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
-          <span style={{ color: '#00C896', cursor: 'pointer' }} onClick={() => navigate('/')}>Body</span>Tune
-        </Typography>
+        {/* רק הלוגו בלי טקסט */}
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            cursor: 'pointer',
+          }}
+          onClick={() => navigate('/')}
+        >
+          <img
+            src="/images/image (14).png"
+            alt="BodyTune Logo"
+            style={{ height: 'auto', maxHeight: 40 }}
+          />
+        </Box>
+
         <Box sx={{ display: 'flex', gap: 3 }}>
           <Button color="inherit" onClick={() => navigate('/')}>Home</Button>
           <Button color="inherit" onClick={() => navigate('/classes')}>Classes</Button>
-          <Button color="inherit">Membership</Button>
+          <Button color="inherit" onClick={() => navigate('/membershipPlans')}>Membership</Button>
           <Button color="inherit">Contact</Button>
         </Box>
 
@@ -94,7 +115,7 @@ const Header: React.FC = () => {
                 <ListItemIcon>
                   <LogoutIcon fontSize="small" />
                 </ListItemIcon>
-                profile
+                Profile
               </MenuItem>
             </Menu>
           </>

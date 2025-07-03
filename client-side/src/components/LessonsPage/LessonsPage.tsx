@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Paper, Container } from '@mui/material';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface Lesson {
   id: number;
@@ -32,32 +34,37 @@ const LessonsPage: React.FC = () => {
 
   const isRegistered = (lessonId: number) => myRegistrations.includes(lessonId);
 
-  useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    const token = localStorage.getItem("token");
+  // השינויים הרלוונטיים נמצאים רק בתוך useEffect
+useEffect(() => {
+  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
 
-    // Load lessons
-    fetch('http://localhost:8080/Lessons/getAll')
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to fetch lessons');
-        return res.json();
-      })
-      .then((data) => setLessons(data))
-      .catch((err) => console.error('Failed to load lessons:', err));
+  fetch('http://localhost:8080/Lessons/getAll')
+    .then((res) => {
+      if (!res.ok) throw new Error('Failed to fetch lessons');
+      return res.json();
+    })
+    .then((data) => setLessons(data))
+    .catch((err) => console.error('Failed to load lessons:', err));
 
-    // Load user's registrations
-    if (userId && token) {
-      fetch(`http://localhost:8080/LessonRegistration/byUser/${userId}`, {
-        headers: { Authorization: "Bearer " + token }
+  if (userId && token) {
+    fetch(`http://localhost:8080/LessonRegistration/byUser/${userId}`, {
+      headers: { Authorization: "Bearer " + token }
+    })
+      .then(async res => {
+        if (!res.ok) {
+          const msg = await res.text();
+          console.warn("Failed to load registrations:", msg);
+          return;
+        }
+        const data = await res.json();
+        const ids = data.map((r: any) => r.lesson.id);
+        setMyRegistrations(ids);
       })
-        .then(res => res.json())
-        .then(data => {
-          const ids = data.map((r: any) => r.lesson.id);
-          setMyRegistrations(ids);
-        })
-        .catch(err => console.error("Failed to load registrations", err));
-    }
-  }, []);
+      .catch(err => console.error("Failed to load registrations", err));
+  }
+}, []);
+
 
   const getLesson = (dayIndex: number, time: string) => {
     return lessons.find((lesson) => {
@@ -72,8 +79,15 @@ const LessonsPage: React.FC = () => {
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
 
-    if (!userId || !token) return alert("עליך להתחבר לפני ההרשמה");
-    if (isRegistered(lessonId)) return alert("כבר נרשמת לשיעור הזה");
+    if (!userId || !token) {
+      toast.warning("עליך להתחבר לפני ההרשמה");
+      return;
+    }
+
+    if (isRegistered(lessonId)) {
+      toast.info("You are already registered for this lesson.");
+      return;
+    }
 
     try {
       const response = await fetch("http://localhost:8080/LessonRegistration/add", {
@@ -92,12 +106,11 @@ const LessonsPage: React.FC = () => {
 
       if (!response.ok) throw new Error("Registration failed");
 
-      setMyRegistrations(prev => [...prev, lessonId]); // עדכון סטייט
-      alert("נרשמת בהצלחה 🎉");
-
+      setMyRegistrations(prev => [...prev, lessonId]);
+      toast.success("נרשמת בהצלחה 🎉");
     } catch (err) {
       console.error(err);
-      alert("שגיאה בהרשמה לשיעור");
+      toast.error("כבר נרשמת לשיעור זה😞");
     }
   };
 
@@ -174,6 +187,8 @@ const LessonsPage: React.FC = () => {
           ))}
         </Box>
       </Container>
+
+      <ToastContainer position="bottom-center" theme="dark" />
     </Box>
   );
 };

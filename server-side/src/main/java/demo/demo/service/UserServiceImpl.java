@@ -28,6 +28,15 @@ public class UserServiceImpl implements UserService {
         if (!rep.existsById(u.getCode())) {
             throw new RuntimeException("Cannot update User with id " + u.getCode() + " because it does not exist.");
         }
+
+        User existingUser = rep.findById(u.getCode())
+            .orElseThrow(() -> new RuntimeException("User not found."));
+
+        // שמירה על הסיסמה הקיימת אם לא הוזנה חדשה
+        if (u.getPassword() == null || u.getPassword().trim().isEmpty()) {
+            u.setPassword(existingUser.getPassword());
+        }
+
         rep.save(u);
     }
 
@@ -47,10 +56,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getByIdUser(long idUser) {
         Optional<User> u = rep.findById(idUser);
-        if (u.isPresent()) {
-            return u.get();
-        } else {
-            throw new RuntimeException("User with id " + idUser + " not found.");
-        }
+        return u.orElseThrow(() -> new RuntimeException("User with id " + idUser + " not found."));
     }
 }

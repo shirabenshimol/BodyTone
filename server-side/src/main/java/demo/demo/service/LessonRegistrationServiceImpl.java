@@ -57,24 +57,24 @@ public class LessonRegistrationServiceImpl implements LessonRegistrationService 
     @Override
     public void updateLessonRegistration(LessonRegistration l) {
         if (!rep.existsById(l.getId()))
-            throw new RuntimeException(
-                    "Cannot update LessonRegistration with id " + l.getId() + " because it does not exist.");
-
-        // לוודא שגם כאן הישויות קיימות (אם לא עשית קודם)
+            throw new RuntimeException("LessonRegistration with id " + l.getId() + " does not exist.");
+    
+        // לוודא שגם כאן הישויות קיימות
         Long userId = l.getId().getUserId();
         Long lessonId = l.getId().getLessonId();
-
+    
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
-
+    
         Lesson lesson = lessonRepository.findById(lessonId)
                 .orElseThrow(() -> new RuntimeException("Lesson not found with ID: " + lessonId));
-
+    
         l.setUser(user);
         l.setLesson(lesson);
-
+    
         rep.save(l);
     }
+    
 
     @Override
     public List<LessonHistoryDTO> getLessonsByUserId(Long userId) {
