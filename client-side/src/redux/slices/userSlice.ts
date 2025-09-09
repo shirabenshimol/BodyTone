@@ -15,11 +15,13 @@ type User = {
 };
 
 type UserState = {
+  token: any;
   user: User | null;
 };
 
 const initialState: UserState = {
   user: null,
+  token: null,
 };
 
 const userSlice = createSlice({

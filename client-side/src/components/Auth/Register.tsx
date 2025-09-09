@@ -9,6 +9,11 @@ import * as Yup from 'yup';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+const API_BASE =
+  process.env.REACT_APP_API_BASE || "http://localhost:8080";
+
+
+
 const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -34,7 +39,7 @@ const RegisterPage: React.FC = () => {
     validationSchema,
     onSubmit: async (values) => {
       try {
-        const response = await fetch('http://localhost:8080/api/auth/register', {
+        const response = await fetch(`${API_BASE}/api/auth/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(values),

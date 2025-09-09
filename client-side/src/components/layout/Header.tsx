@@ -11,11 +11,15 @@ import {
 } from '@mui/material';
 import { Logout as LogoutIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
+const API_BASE =
+  process.env.REACT_APP_API_BASE || "http://localhost:8080";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const userId = localStorage.getItem("userId");
+  const userId = useSelector((state: any) => state.user.user?.code);
 
   const [userName, setUserName] = useState("");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -25,7 +29,7 @@ const Header: React.FC = () => {
     const fetchUserName = async () => {
       if (!userId) return;
       try {
-        const response = await fetch(`http://localhost:8080/Users/getByCode/${userId}`);
+        const response = await fetch(`${API_BASE}/Users/getByCode/${userId}`);
         if (!response.ok) throw new Error("Failed to fetch user");
         const data = await response.json();
         setUserName(data.name || "");

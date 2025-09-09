@@ -8,5 +8,6 @@ public interface LessonService {
     void deleteLesson(long idLesson);
     List<Lesson> getAll();
     Lesson getByIdLesson(long idLesson);
+    List<Lesson> getLessonsByMonth(int month, int year);
 } 
 

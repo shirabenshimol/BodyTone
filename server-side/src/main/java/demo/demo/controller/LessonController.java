@@ -27,7 +27,8 @@ public class LessonController {
 
     @GetMapping("/getAll")
     public List<LessonDTO> getAllLessons() {
-        Type t = new TypeToken<List<LessonDTO>>() {}.getType();
+        Type t = new TypeToken<List<LessonDTO>>() {
+        }.getType();
         return mapper.map(aService.getAll(), t);
     }
 
@@ -82,4 +83,12 @@ public class LessonController {
                     .body("שגיאה בקבלת השיעור: " + e.getMessage());
         }
     }
+
+    @GetMapping("/byMonth")
+public List<LessonDTO> getLessonsByMonth(@RequestParam int month, @RequestParam int year) {
+    Type t = new TypeToken<List<LessonDTO>>() {}.getType();
+    return mapper.map(aService.getLessonsByMonth(month, year), t);
+}
+
+
 }

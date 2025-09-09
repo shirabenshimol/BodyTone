@@ -12,10 +12,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import { updateUser } from '../../redux/slices/userSlice';
 import { useDispatch } from 'react-redux';
 
+const API_BASE =
+  process.env.REACT_APP_API_BASE || "http://localhost:8080";
 
 
 const ProfilePage: React.FC = () => {
-  const user = useAppSelector(state => state.user.user);
+ 
   const dispatch = useDispatch();
 
   type LessonHistoryItem = {
@@ -34,8 +36,11 @@ const ProfilePage: React.FC = () => {
   const [editMode, setEditMode] = useState(false);
   const [editData, setEditData] = useState<any>(null);
 
-  const userId = localStorage.getItem("userId");
+  
   const token = localStorage.getItem("token");
+  const user = useAppSelector(state => state.user.user);
+  const userId = user?.code;
+
 
   useEffect(() => {
     if (user) {
@@ -54,7 +59,7 @@ const ProfilePage: React.FC = () => {
     const fetchLessonHistory = async () => {
       if (!userId || !token) return;
       try {
-        const response = await fetch(`http://localhost:8080/LessonRegistration/getByUser/${userId}`, {
+        const response = await fetch(`${API_BASE}/LessonRegistration/getByUser/${userId}`, {
           headers: { "Authorization": `Bearer ${token}` }
         });
 
@@ -101,7 +106,7 @@ const ProfilePage: React.FC = () => {
   const handleCancel = async (lessonId: number) => {
     if (!userId || !token) return;
     try {
-      const response = await fetch(`http://localhost:8080/LessonRegistration/delete/${lessonId}/${userId}`, {
+      const response = await fetch(`${API_BASE}/LessonRegistration/delete/${lessonId}/${userId}`, {
         method: "DELETE",
         headers: { "Authorization": `Bearer ${token}` }
       });
@@ -123,7 +128,7 @@ const ProfilePage: React.FC = () => {
         return;
       }
 
-      const response = await fetch(`http://localhost:8080/Users/update`, {
+      const response = await fetch(`${API_BASE}/Users/update`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

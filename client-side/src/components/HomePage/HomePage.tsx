@@ -9,10 +9,15 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
+import ChatBot from '../ChatBot/ChatBot';
+
+
+
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
+
     <Box
       sx={{
         background: 'linear-gradient(to bottom right, #0f172a, #1e293b)',
@@ -85,7 +90,13 @@ const HomePage: React.FC = () => {
           </Box>
         </Grid>
       </Grid>
+      <Box sx={{ mt: 8 }}>
+        <ChatBot />
+      </Box>
     </Box>
+
+
+
   );
 };
 

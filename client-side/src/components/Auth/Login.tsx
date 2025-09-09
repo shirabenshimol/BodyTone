@@ -12,6 +12,12 @@ import { useFormik } from 'formik';
 import { useAppDispatch } from '../../redux/hooks';
 import { setUser } from '../../redux/slices/userSlice';
 
+const API_BASE =
+  process.env.REACT_APP_API_BASE || "http://localhost:8080";
+
+
+
+
 
 
 interface LoginFormValues {
@@ -36,7 +42,7 @@ const Login: React.FC = () => {
     }),
     onSubmit: async (values: any) => {
       try {
-        const response = await fetch('http://localhost:8080/api/auth/login', {
+        const response = await fetch(`${API_BASE}/api/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(values),
@@ -46,7 +52,7 @@ const Login: React.FC = () => {
 
         const data = await response.json();
         localStorage.setItem("token", data.token);
-        localStorage.setItem("userId", data.code);
+       
 
         dispatch(setUser({
           code: data.code,
