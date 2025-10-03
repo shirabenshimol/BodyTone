@@ -42,7 +42,8 @@ The system is fully deployed on **AWS** (RDS, S3, Lambda, Elastic Beanstalk).
 <img width="1366" height="627" alt="image" src="https://github.com/user-attachments/assets/bdecfb3d-32d3-448e-a798-a1f41a1dd969" />
 
 ### Profile Page
-<img width="1366" height="636" alt="image" src="https://github.com/user-attachments/assets/4563a959-6fd9-4bfc-9a63-14b11e1c6c55" />
+<img width="1366" height="636" alt="image" src="https://github.com/user-attachments/assets/ffed61b2-878d-4397-90eb-c31ec782ac8c" />
+
 
 
 
