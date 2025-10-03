@@ -30,18 +30,21 @@ The system is fully deployed on **AWS** (RDS, S3, Lambda, Elastic Beanstalk).
 ## 📸 Screenshots
 
 ### Homepage
-<img width="1350" height="638" alt="image" src="https://github.com/user-attachments/assets/598bc0a5-01bc-4962-8c70-113e82412a41" />
-
+<img width="1366" height="636" alt="image" src="https://github.com/user-attachments/assets/6e7cadfa-d9f9-44be-aa64-4803d15953ce" />
 
 ### Login Page
-![Login](images/login.png)
+<img width="1351" height="640" alt="image" src="https://github.com/user-attachments/assets/f622c6f6-4ac8-4044-ad07-c473b89cd317" />
+
+### Membership Plans
+<img width="1350" height="642" alt="image" src="https://github.com/user-attachments/assets/ba68cbf7-60bf-4786-bcd4-d2803c6170d9" />
+
+### Class Schedule
+<img width="1366" height="627" alt="image" src="https://github.com/user-attachments/assets/bdecfb3d-32d3-448e-a798-a1f41a1dd969" />
 
 ### Profile Page
-![Profile](images/profile.png)
+<img width="1366" height="636" alt="image" src="https://github.com/user-attachments/assets/fe40b3e9-7caa-4b1c-9ab8-10eba7f55b33" />
 
-*(Upload screenshots to a folder named `images/` in your repo, then update the file names accordingly.)*
 
----
 
 ## ⚙️ Installation & Running Locally
 
