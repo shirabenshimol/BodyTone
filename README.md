@@ -30,7 +30,8 @@ The system is fully deployed on **AWS** (RDS, S3, Lambda, Elastic Beanstalk).
 ## 📸 Screenshots
 
 ### Homepage
-![Homepage](https://github.com/user-attachments/assets/8e26dc... )
+<img width="1350" height="638" alt="image" src="https://github.com/user-attachments/assets/598bc0a5-01bc-4962-8c70-113e82412a41" />
+
 
 ### Login Page
 ![Login](images/login.png)
