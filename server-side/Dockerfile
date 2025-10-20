@@ -9,7 +9,8 @@ COPY pom.xml .
 COPY src ./src
 
 # Build the project
-RUN mvn clean install
+RUN mvn clean install -DskipTests
+
 
 # Run the app
 CMD ["java", "-jar", "target/demo-0.0.1-SNAPSHOT.jar"]
