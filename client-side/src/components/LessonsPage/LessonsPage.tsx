@@ -64,7 +64,7 @@ const LessonsPage: React.FC = () => {
       .then((data: Lesson[]) => setLessons(data))
       .catch((err) => {
         console.error("Failed to load lessons:", err);
-        toast.error("טעינת שיעורים נכשלה");
+        toast.error("Loading lessons failed");
       });
 
     // 2) ההרשמות שלי (אם מחוברת עם userId + token)
@@ -103,12 +103,12 @@ const LessonsPage: React.FC = () => {
   // ---- הרשמה ----
   const handleRegister = async (lessonId: number) => {
     if (!userId || !token) {
-      toast.warning("עליך להתחבר לפני ההרשמה");
+      toast.warning("You must log in before registering");
       return;
     }
 
     if (isRegistered(lessonId)) {
-      toast.info("כבר רשומה לשיעור הזה");
+      toast.info("Already registered for this class");
       return;
     }
 
@@ -130,10 +130,10 @@ const LessonsPage: React.FC = () => {
       if (!res.ok) throw new Error(await res.text());
 
       setMyRegistrations((prev) => [...prev, lessonId]);
-      toast.success("נרשמת בהצלחה 🎉");
+      toast.success("You have successfully registered 🎉");
     } catch (err) {
       console.error(err);
-      toast.error("הרשמה נכשלה");
+      toast.error("Registration failed");
     }
   };
 

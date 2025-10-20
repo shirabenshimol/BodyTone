@@ -11,47 +11,67 @@ import { useNavigate } from 'react-router-dom';
 
 import ChatBot from '../ChatBot/ChatBot';
 
-
-
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-
     <Box
       sx={{
         background: 'linear-gradient(to bottom right, #0f172a, #1e293b)',
         color: 'white',
         minHeight: '100vh',
-        px: 4,
-        pt: 12,
+        px: { xs: 2, sm: 4 }, // 🔄 מותאם לרספונסיביות
+        pt: { xs: 8, sm: 12 }, // 🔄 מותאם לרספונסיביות
       }}
     >
       <Grid container justifyContent="flex-start" alignItems="center" spacing={4}>
         <Grid item xs={12} md={6}>
-          <Typography variant="h2" fontWeight="bold" sx={{ mb: 2, lineHeight: 1.2 }}>
+          <Typography
+            variant="h2"
+            fontWeight="bold"
+            sx={{
+              mb: 2,
+              lineHeight: 1.2,
+              fontSize: { xs: '2.2rem', sm: '3rem', md: '3.75rem' }, // 🔄 מותאם לרספונסיביות
+            }}
+          >
             <Box component="span" sx={{ color: '#10b981' }}>Body</Box>,<br />
             Transform Your <br />
             <Box component="span" sx={{ color: '#10b981' }}>Life</Box>
           </Typography>
 
-          <Typography variant="h6" sx={{ mb: 4 }}>
+          <Typography
+            variant="h6"
+            sx={{
+              mb: 4,
+              fontSize: { xs: '1rem', sm: '1.25rem' }, // 🔄 מותאם לרספונסיביות
+            }}
+          >
             Join thousands who've achieved their fitness goals with our expert trainers and cutting-edge equipment.
           </Typography>
 
           {/* שורת כפתורים + תיבה מימין */}
-          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              gap: 2,
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              flexDirection: { xs: 'column', sm: 'row' }, // 🔄 במובייל זה טור
+            }}
+          >
             <Button
               variant="contained"
               sx={{
                 backgroundColor: '#10b981',
                 fontWeight: 'bold',
-                px: 3,
-                py: 1.5,
+                px: { xs: 2, sm: 3 }, // 🔄 ריווח שונה לפי מסך
+                py: { xs: 1, sm: 1.5 },
                 borderRadius: 2,
                 '&:hover': { backgroundColor: '#0ea971' },
               }}
-              onClick={() => navigate('/membershipPlans')}>
+              onClick={() => navigate('/membershipPlans')}
+            >
               Start Your Journey
             </Button>
 
@@ -61,8 +81,8 @@ const HomePage: React.FC = () => {
                 color: 'white',
                 borderColor: 'white',
                 fontWeight: 'bold',
-                px: 3,
-                py: 1.5,
+                px: { xs: 2, sm: 3 },
+                py: { xs: 1, sm: 1.5 },
                 borderRadius: 2,
                 '&:hover': {
                   borderColor: '#10b981',
@@ -90,13 +110,11 @@ const HomePage: React.FC = () => {
           </Box>
         </Grid>
       </Grid>
+
       <Box sx={{ mt: 8 }}>
         <ChatBot />
       </Box>
     </Box>
-
-
-
   );
 };
 

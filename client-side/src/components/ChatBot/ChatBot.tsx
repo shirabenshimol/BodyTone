@@ -30,7 +30,7 @@ const FloatingChatBot: React.FC = () => {
                 {
                     sender: "bot",
                     text:
-                        "היי! אני הבוט של 💪 BodyTune\nשמח שקפצתם לבקר! איך אני יכול לעזור לכם להתחיל את המסע לגרסה החזקה ביותר שלכם?",
+                    "Hi! I'm the 💪 BodyTune bot. Glad you stopped by! How can I help you start your journey to the strongest version of yourself?",
                 },
             ]);
         }
@@ -59,8 +59,8 @@ const FloatingChatBot: React.FC = () => {
             const botReply = res.data?.response;
             setMessages([
                 ...pending,
-                { sender: "bot", text: botReply || "🤖 לא הצלחתי להבין… נסי לנסח אחרת 🟢" },
-            ]);
+                { sender: "bot", text: botReply || "🤖 I couldn't understand… Try to phrase it differently 🟢" },
+              ]);
         } catch {
             setMessages([...pending, { sender: "bot", text: "⚠️ שגיאה בשרת. נסי שוב בעוד רגע." }]);
         } finally {
@@ -102,7 +102,7 @@ const FloatingChatBot: React.FC = () => {
                                 <div className={`bt-bubble ${m.sender}`}>{m.text}</div>
                             </div>
                         ))}
-                        {loading && <div className="bt-typing">הבוט כותב…</div>}
+                        {loading && <div className="bt-typing">The bot writes…</div>}
                     </div>
 
                     {/* קלט */}
@@ -111,7 +111,7 @@ const FloatingChatBot: React.FC = () => {
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-                            placeholder="כתבי כאן את השאלה…"
+                            placeholder="Write the question here…"
                         />
                         <button onClick={sendMessage} disabled={loading}>➤</button>
                     </div>
