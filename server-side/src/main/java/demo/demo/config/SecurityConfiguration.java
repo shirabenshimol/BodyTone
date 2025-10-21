@@ -111,7 +111,8 @@ public class SecurityConfiguration {
         CorsConfiguration cfg = new CorsConfiguration();
         // מקורות מותרים: פרודקשן (S3) + פיתוח (localhost)
         cfg.setAllowedOrigins(List.of(
-            "http://bodytone-frontend.s3-website-us-east-1.amazonaws.com",
+            // "http://bodytone-frontend.s3-website-us-east-1.amazonaws.com",
+            "https:bodytone-frontend.onrender.com",
             "http://localhost:3000"
         ));
         cfg.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
